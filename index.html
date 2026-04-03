@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>قصتي التفاعلية - HTML5</title>
+    <title>Interactive Storybook - HTML5</title>
     <style>
       * { box-sizing: border-box; }
       body {
@@ -44,13 +44,13 @@
         padding: 0.62rem 0.75rem;
         font-size: 0.98rem;
         cursor: pointer;
-        text-align: right;
+        text-align: left;
       }
       .choice-btn:hover { background: #334155; }
       .choice-result {
         margin: 0;
-        border-inline-start: 3px solid #22d3ee;
-        padding-inline-start: 0.7rem;
+        border-left: 3px solid #22d3ee;
+        padding-left: 0.7rem;
         color: #fef9c3;
         min-height: 2.2rem;
       }
@@ -62,7 +62,7 @@
         font-weight: 700;
         cursor: pointer;
       }
-      #restart-btn { margin-inline-start: auto; background: #7c3aed; color: #fff; }
+      #restart-btn { margin-left: auto; background: #7c3aed; color: #fff; }
       #next-btn, #prev-btn { background: #0ea5e9; color: #082f49; }
       .controls button:disabled { opacity: 0.45; cursor: not-allowed; }
     </style>
@@ -71,14 +71,14 @@
     <main class="storybook">
       <header class="story-header">
         <p class="badge">Interactive Storybook - HTML5</p>
-        <h1 id="chapter-title">الفصل 1: الرسالة الغامضة</h1>
-        <p id="chapter-counter" class="chapter-counter">الفصل 1 من 9</p>
+        <h1 id="chapter-title">Chapter 1: The Mysterious Letter</h1>
+        <p id="chapter-counter" class="chapter-counter">Chapter 1 of 9</p>
       </header>
 
       <section class="story-body">
         <p id="chapter-text"></p>
         <div class="choices">
-          <p class="choices-label">ماذا تريد أن تفعل؟</p>
+          <p class="choices-label">What do you do?</p>
           <button id="choice-a" class="choice-btn"></button>
           <button id="choice-b" class="choice-btn"></button>
         </div>
@@ -86,23 +86,23 @@
       </section>
 
       <footer class="controls">
-        <button id="prev-btn" disabled>السابق</button>
-        <button id="next-btn">التالي</button>
-        <button id="restart-btn">إعادة البداية</button>
+        <button id="prev-btn" disabled>Previous</button>
+        <button id="next-btn">Next</button>
+        <button id="restart-btn">Restart</button>
       </footer>
     </main>
 
     <script>
       const chapters = [
-        { title: "الفصل 1: الرسالة الغامضة", text: "في ليلة هادئة، وصلتك رسالة بدون اسم تقول: (إذا أردت أن ترى مدينة السماء، اتبع الضوء الأزرق).", choices: ["أتبع الضوء فورًا", "أنتظر حتى الصباح"], results: ["خطوة جريئة! وجدت أثرًا لامعًا يقودك خارج المدينة.", "قرار حكيم... لكن الأثر أصبح أضعف قليلًا عند الفجر."] },
-        { title: "الفصل 2: جسر الضباب", text: "وصلت إلى جسر قديم مغطى بالضباب. تحتك نهر لا نهاية له وصوت غريب ينادي اسمك.", choices: ["أعبر بسرعة", "أتقدم ببطء وأفحص الطريق"], results: ["السرعة أنقذتك من ظلال ظهرت خلفك.", "وجدت رمزًا محفورًا على الجسر قد يفيدك لاحقًا."] },
-        { title: "الفصل 3: بائع الخرائط", text: "في سوق مهجور، قابلت بائع خرائط يقول إنه يعرف طريق مدينة السماء مقابل خدمة صغيرة.", choices: ["أقبل عرضه", "أرفض وأبحث وحدي"], results: ["أعطاك خريطة ممزقة لكن عليها علامة واضحة نحو الشمال.", "الاستقلال جميل، لكنك ضيعت وقتًا بين الأزقة."] },
-        { title: "الفصل 4: بوابة الرياح", text: "وجدت بوابة حجرية لا تفتح إلا عندما تعزف الرياح نغمة معينة.", choices: ["أصفر لحنًا بسيطًا", "أنتظر هبة الريح"], results: ["اللحن حرّك الأحجار، وانفتحت البوابة نصف فتحة.", "انتظارك كان صائبًا، الريح فتحت البوابة بالكامل."] },
-        { title: "الفصل 5: حديقة الزمن", text: "دخلت حديقة تتحرك فيها الساعة بشكل عكسي، وكل دقيقة تغيّر شكل الأشجار.", choices: ["أتبع الشجرة الفضية", "أتبع صوت الساعة"], results: ["الشجرة الفضية قادتك إلى ممر آمن قصير.", "صوت الساعة قادك إلى غرفة أسرار مليئة بالمفاتيح."] },
-        { title: "الفصل 6: الحارس النائم", text: "قبل الصعود إلى القمة، واجهت حارسًا عملاقًا نائمًا بجانب الجرس السماوي.", choices: ["أمرّ بهدوء", "أوقظه وأسأله عن الطريق"], results: ["نجحت بالمرور، لكنك فقدت إحدى أدواتك على الطريق.", "استيقظ الحارس وابتسم: (أخيرًا وصل شخص شجاع)."] },
-        { title: "الفصل 7: سلّم الغيوم", text: "ظهر أمامك سلّم من نور يصعد بين الغيوم، لكنه يختفي ويظهر كل لحظة.", choices: ["أصعد بسرعة عند ظهوره", "أحسب الإيقاع ثم أصعد"], results: ["حماسك أوصلك للأعلى، رغم بعض التعثر.", "الدقة جعلت صعودك ثابتًا وآمنًا."] },
-        { title: "الفصل 8: مرآة الحقيقة", text: "في القاعة الأخيرة، واجهتك مرآة تعرض نسخة منك خائفة تريد العودة.", choices: ["أكسر المرآة", "أتحدث مع انعكاسي"], results: ["اختفى الخوف سريعًا، لكنك شعرت بثقل في قلبك.", "تفهمت خوفك وتحول الانعكاس إلى ضوء دافئ."] },
-        { title: "الفصل 9: مدينة السماء", text: "وصلت أخيرًا إلى مدينة السماء، واكتشفت أن الرسالة كانت منك... من المستقبل.", choices: ["أرسل رسالة جديدة لبدايتك", "أبقى هنا وأبدأ حياة جديدة"], results: ["أغلقت الحلقة الزمنية... وبدا كل شيء منطقيًا أخيرًا.", "اخترت بداية جديدة، وصارت المدينة بيتك الأبدي."] }
+        { title: "Chapter 1: The Mysterious Letter", text: "On a quiet night, you receive an unsigned letter: 'If you want to see the City in the Sky, follow the blue light.'", choices: ["Follow the light now", "Wait until sunrise"], results: ["Bold move! You find a glowing trail leading out of town.", "Careful choice... but by morning, the trail is weaker."] },
+        { title: "Chapter 2: Bridge of Fog", text: "You reach an ancient bridge covered in fog. Below, a river with no end. A strange voice calls your name.", choices: ["Cross quickly", "Move slowly and inspect the path"], results: ["Your speed saves you from shadows behind you.", "You discover a carved symbol that may help later."] },
+        { title: "Chapter 3: The Map Seller", text: "In an abandoned market, a map seller claims he knows the route to the sky city—for a small favor.", choices: ["Accept the offer", "Refuse and search alone"], results: ["He gives you a torn map with a clear mark to the north.", "Independence feels good, but you lose time in the alleys."] },
+        { title: "Chapter 4: Gate of Winds", text: "A stone gate appears. It opens only when the wind plays the correct note.", choices: ["Whistle a simple melody", "Wait for the wind"], results: ["The melody shifts the stones; the gate opens halfway.", "Your patience works—the wind opens the gate fully."] },
+        { title: "Chapter 5: Garden of Time", text: "Inside is a garden where time moves backward, and every minute the trees change shape.", choices: ["Follow the silver tree", "Follow the ticking sound"], results: ["The silver tree leads you to a short, safe passage.", "The ticking leads to a chamber full of hidden keys."] },
+        { title: "Chapter 6: The Sleeping Guardian", text: "Before the summit, a giant guardian sleeps beside a celestial bell.", choices: ["Sneak past quietly", "Wake him and ask the way"], results: ["You slip by, but lose one of your tools.", "He wakes, smiles, and says: 'At last, someone brave enough.'"] },
+        { title: "Chapter 7: Stairway of Clouds", text: "A staircase of light rises through the clouds, appearing and vanishing in rhythm.", choices: ["Climb fast when it appears", "Study the rhythm, then climb"], results: ["Your energy gets you up, even with a few stumbles.", "Precision makes your climb steady and safe."] },
+        { title: "Chapter 8: Mirror of Truth", text: "In the final hall, a mirror shows a frightened version of you begging to turn back.", choices: ["Break the mirror", "Speak to your reflection"], results: ["Fear disappears quickly, but leaves a heavy feeling.", "Understanding your fear turns the reflection into warm light."] },
+        { title: "Chapter 9: The City in the Sky", text: "You finally arrive and discover the letter was sent by you... from the future.", choices: ["Send a new letter to your past self", "Stay and begin a new life"], results: ["The time loop closes—and everything finally makes sense.", "You choose a new beginning, and the city becomes your home."] }
       ];
 
       const titleEl = document.getElementById("chapter-title");
@@ -121,14 +121,14 @@
       function renderChapter() {
         const chapter = chapters[chapterIndex];
         titleEl.textContent = chapter.title;
-        counterEl.textContent = `الفصل ${chapterIndex + 1} من ${chapters.length}`;
+        counterEl.textContent = `Chapter ${chapterIndex + 1} of ${chapters.length}`;
         textEl.textContent = chapter.text;
         choiceAButton.textContent = chapter.choices[0];
         choiceBButton.textContent = chapter.choices[1];
 
         const saved = chapterDecisions[chapterIndex];
         choiceResultEl.textContent = saved === null
-          ? "اختر أحد الخيارين لمعرفة نتيجة قرارك."
+          ? "Choose one option to reveal the outcome."
           : chapter.results[saved];
 
         prevBtn.disabled = chapterIndex === 0;

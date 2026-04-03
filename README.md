@@ -1,22 +1,22 @@
 # ar-project
 
-نسخة HTML5 كاملة في ملف واحد (`index.html`) لقصة تفاعلية عربية من 9 فصول.
+A complete single-file HTML5 interactive storybook with 9 chapters.
 
-## المميزات
+## Features
 
-- كل شيء داخل `index.html` (HTML + CSS + JavaScript).
-- 9 فصول تفاعلية.
-- خيارين في كل فصل مع نتيجة مختلفة.
-- أزرار: السابق / التالي / إعادة البداية.
+- Everything is inside `index.html` (HTML + CSS + JavaScript).
+- 9 interactive chapters.
+- Two choices per chapter with different outcomes.
+- Navigation controls: Previous / Next / Restart.
 
-## التشغيل
+## Run
 
 ```bash
 python3 -m http.server 8000
 ```
 
-ثم افتح:
+Then open:
 
 `http://localhost:8000`
 
-> لا تحتاج أي مكتبات خارجية.
+> No external libraries are required.
