@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interactive Storybook - HTML5</title>
+    <title>123 Lets Learn English Under the Palm Tree</title>
     <style>
       * { box-sizing: border-box; }
       body {
@@ -70,15 +70,15 @@
   <body>
     <main class="storybook">
       <header class="story-header">
-        <p class="badge">Interactive Storybook - HTML5</p>
-        <h1 id="chapter-title">Chapter 1: The Mysterious Letter</h1>
+        <p class="badge">123 Lets Learn English Under the Palm Tree</p>
+        <h1 id="chapter-title">Chapter 1: Under the Palm Tree</h1>
         <p id="chapter-counter" class="chapter-counter">Chapter 1 of 9</p>
       </header>
 
       <section class="story-body">
         <p id="chapter-text"></p>
         <div class="choices">
-          <p class="choices-label">What do you do?</p>
+          <p class="choices-label">Pick your learning move:</p>
           <button id="choice-a" class="choice-btn"></button>
           <button id="choice-b" class="choice-btn"></button>
         </div>
@@ -94,16 +94,16 @@
 
     <script>
       const chapters = [
-        { title: "Chapter 1: The Mysterious Letter", text: "On a quiet night, you receive an unsigned letter: 'If you want to see the City in the Sky, follow the blue light.'", choices: ["Follow the light now", "Wait until sunrise"], results: ["Bold move! You find a glowing trail leading out of town.", "Careful choice... but by morning, the trail is weaker."] },
-        { title: "Chapter 2: Bridge of Fog", text: "You reach an ancient bridge covered in fog. Below, a river with no end. A strange voice calls your name.", choices: ["Cross quickly", "Move slowly and inspect the path"], results: ["Your speed saves you from shadows behind you.", "You discover a carved symbol that may help later."] },
-        { title: "Chapter 3: The Map Seller", text: "In an abandoned market, a map seller claims he knows the route to the sky city—for a small favor.", choices: ["Accept the offer", "Refuse and search alone"], results: ["He gives you a torn map with a clear mark to the north.", "Independence feels good, but you lose time in the alleys."] },
-        { title: "Chapter 4: Gate of Winds", text: "A stone gate appears. It opens only when the wind plays the correct note.", choices: ["Whistle a simple melody", "Wait for the wind"], results: ["The melody shifts the stones; the gate opens halfway.", "Your patience works—the wind opens the gate fully."] },
-        { title: "Chapter 5: Garden of Time", text: "Inside is a garden where time moves backward, and every minute the trees change shape.", choices: ["Follow the silver tree", "Follow the ticking sound"], results: ["The silver tree leads you to a short, safe passage.", "The ticking leads to a chamber full of hidden keys."] },
-        { title: "Chapter 6: The Sleeping Guardian", text: "Before the summit, a giant guardian sleeps beside a celestial bell.", choices: ["Sneak past quietly", "Wake him and ask the way"], results: ["You slip by, but lose one of your tools.", "He wakes, smiles, and says: 'At last, someone brave enough.'"] },
-        { title: "Chapter 7: Stairway of Clouds", text: "A staircase of light rises through the clouds, appearing and vanishing in rhythm.", choices: ["Climb fast when it appears", "Study the rhythm, then climb"], results: ["Your energy gets you up, even with a few stumbles.", "Precision makes your climb steady and safe."] },
-        { title: "Chapter 8: Mirror of Truth", text: "In the final hall, a mirror shows a frightened version of you begging to turn back.", choices: ["Break the mirror", "Speak to your reflection"], results: ["Fear disappears quickly, but leaves a heavy feeling.", "Understanding your fear turns the reflection into warm light."] },
-        { title: "Chapter 9: The City in the Sky", text: "You finally arrive and discover the letter was sent by you... from the future.", choices: ["Send a new letter to your past self", "Stay and begin a new life"], results: ["The time loop closes—and everything finally makes sense.", "You choose a new beginning, and the city becomes your home."] }
-      ];
+        { title: "Chapter 1: Under the Palm Tree", text: "Teacher Lina writes in the sand: 1, 2, 3. 'Today we learn English under the palm tree,' she smiles.", choices: ["Say: One, Two, Three", "Say: Uno, Dos, Tres"], results: ["Great! You used the English numbers correctly.", "Nice try! That is Spanish, not English."] },
+        { title: "Chapter 2: Hello Time", text: "A small parrot lands nearby. Lina asks, 'How do we greet our new friend in English?'", choices: ["Say: Hello!", "Say: Goodbye!"], results: ["Perfect greeting. The parrot happily repeats 'Hello!'.", "Oops, goodbye is for leaving, not meeting."] },
+        { title: "Chapter 3: Colors in the Sky", text: "You point at the sea and sky. Lina asks for two color words in English.", choices: ["Blue and green", "Red and black"], results: ["Excellent! Blue sea and green palm leaves.", "Creative, but not what you see right now."] },
+        { title: "Chapter 4: Palm Tree Parts", text: "Lina touches the tree and asks, 'What is this in English: trunk or river?'", choices: ["Trunk", "River"], results: ["Correct! The middle part is called the trunk.", "Not this time. A river is water, not part of a tree."] },
+        { title: "Chapter 5: Snack Break Words", text: "At break time, you have dates and water. Lina asks: 'Which sentence is correct?'", choices: ["I am hungry.", "I are hungry."], results: ["Great grammar! 'I am hungry' is correct.", "Close! Use 'am' with 'I'."] },
+        { title: "Chapter 6: Action Verbs", text: "The class stands up in the shade. Lina says: 'Choose the action verb in English.'", choices: ["Run", "Banana"], results: ["Yes! 'Run' is an action verb.", "Banana is a noun, not a verb."] },
+        { title: "Chapter 7: Build a Sentence", text: "Now you arrange words on shells: 'I / under / study / tree / the palm'.", choices: ["I study under the palm tree.", "Under I palm the study tree."], results: ["Excellent sentence order!", "The words are mixed up. Try subject + verb + place."] },
+        { title: "Chapter 8: Friendly Conversation", text: "A traveler arrives and asks, 'Can you help me learn English?'", choices: ["Yes, of course!", "No, never!"], results: ["Wonderful! Kind language builds confidence.", "That sounds too harsh for a learning circle."] },
+        { title: "Chapter 9: Graduation Shade", text: "Sunset paints the beach gold. Lina gives you a leaf badge: '123 - Let's Learn English Under the Palm Tree.'", choices: ["Say: Thank you, teacher!", "Stay silent"], results: ["Beautiful finish. You completed the palm-tree English story!", "You passed, but a polite thank-you is always better."] }
+      ]
 
       const titleEl = document.getElementById("chapter-title");
       const counterEl = document.getElementById("chapter-counter");
