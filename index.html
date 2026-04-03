@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>قصتي التفاعلية - HTML5</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: radial-gradient(circle at top, #1e293b, #020617 70%);
+        color: #e2e8f0;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+      }
+      .storybook {
+        width: min(92vw, 760px);
+        background: rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 16px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+        padding: 1.2rem;
+      }
+      .story-header {
+        border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+        padding-bottom: 0.9rem;
+        margin-bottom: 0.9rem;
+      }
+      .badge { margin: 0 0 0.4rem; font-size: 0.8rem; color: #93c5fd; }
+      h1 { margin: 0; font-size: clamp(1.15rem, 2.6vw, 1.7rem); }
+      .chapter-counter { margin-top: 0.4rem; color: #cbd5e1; }
+      .story-body { display: grid; gap: 1rem; }
+      #chapter-text { margin: 0; line-height: 1.9; font-size: 1.06rem; }
+      .choices { display: grid; gap: 0.55rem; }
+      .choices-label { margin: 0; font-weight: 600; color: #a5f3fc; }
+      .choice-btn {
+        border: 1px solid #334155;
+        background: #1e293b;
+        color: #f8fafc;
+        border-radius: 10px;
+        padding: 0.62rem 0.75rem;
+        font-size: 0.98rem;
+        cursor: pointer;
+        text-align: right;
+      }
+      .choice-btn:hover { background: #334155; }
+      .choice-result {
+        margin: 0;
+        border-inline-start: 3px solid #22d3ee;
+        padding-inline-start: 0.7rem;
+        color: #fef9c3;
+        min-height: 2.2rem;
+      }
+      .controls { margin-top: 1rem; display: flex; gap: 0.55rem; }
+      .controls button {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.5rem 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      #restart-btn { margin-inline-start: auto; background: #7c3aed; color: #fff; }
+      #next-btn, #prev-btn { background: #0ea5e9; color: #082f49; }
+      .controls button:disabled { opacity: 0.45; cursor: not-allowed; }
+    </style>
+  </head>
+  <body>
+    <main class="storybook">
+      <header class="story-header">
+        <p class="badge">Interactive Storybook - HTML5</p>
+        <h1 id="chapter-title">الفصل 1: الرسالة الغامضة</h1>
+        <p id="chapter-counter" class="chapter-counter">الفصل 1 من 9</p>
+      </header>
+
+      <section class="story-body">
+        <p id="chapter-text"></p>
+        <div class="choices">
+          <p class="choices-label">ماذا تريد أن تفعل؟</p>
+          <button id="choice-a" class="choice-btn"></button>
+          <button id="choice-b" class="choice-btn"></button>
+        </div>
+        <p id="choice-result" class="choice-result"></p>
+      </section>
+
+      <footer class="controls">
+        <button id="prev-btn" disabled>السابق</button>
+        <button id="next-btn">التالي</button>
+        <button id="restart-btn">إعادة البداية</button>
+      </footer>
+    </main>
+
+    <script>
+      const chapters = [
+        { title: "الفصل 1: الرسالة الغامضة", text: "في ليلة هادئة، وصلتك رسالة بدون اسم تقول: (إذا أردت أن ترى مدينة السماء، اتبع الضوء الأزرق).", choices: ["أتبع الضوء فورًا", "أنتظر حتى الصباح"], results: ["خطوة جريئة! وجدت أثرًا لامعًا يقودك خارج المدينة.", "قرار حكيم... لكن الأثر أصبح أضعف قليلًا عند الفجر."] },
+        { title: "الفصل 2: جسر الضباب", text: "وصلت إلى جسر قديم مغطى بالضباب. تحتك نهر لا نهاية له وصوت غريب ينادي اسمك.", choices: ["أعبر بسرعة", "أتقدم ببطء وأفحص الطريق"], results: ["السرعة أنقذتك من ظلال ظهرت خلفك.", "وجدت رمزًا محفورًا على الجسر قد يفيدك لاحقًا."] },
+        { title: "الفصل 3: بائع الخرائط", text: "في سوق مهجور، قابلت بائع خرائط يقول إنه يعرف طريق مدينة السماء مقابل خدمة صغيرة.", choices: ["أقبل عرضه", "أرفض وأبحث وحدي"], results: ["أعطاك خريطة ممزقة لكن عليها علامة واضحة نحو الشمال.", "الاستقلال جميل، لكنك ضيعت وقتًا بين الأزقة."] },
+        { title: "الفصل 4: بوابة الرياح", text: "وجدت بوابة حجرية لا تفتح إلا عندما تعزف الرياح نغمة معينة.", choices: ["أصفر لحنًا بسيطًا", "أنتظر هبة الريح"], results: ["اللحن حرّك الأحجار، وانفتحت البوابة نصف فتحة.", "انتظارك كان صائبًا، الريح فتحت البوابة بالكامل."] },
+        { title: "الفصل 5: حديقة الزمن", text: "دخلت حديقة تتحرك فيها الساعة بشكل عكسي، وكل دقيقة تغيّر شكل الأشجار.", choices: ["أتبع الشجرة الفضية", "أتبع صوت الساعة"], results: ["الشجرة الفضية قادتك إلى ممر آمن قصير.", "صوت الساعة قادك إلى غرفة أسرار مليئة بالمفاتيح."] },
+        { title: "الفصل 6: الحارس النائم", text: "قبل الصعود إلى القمة، واجهت حارسًا عملاقًا نائمًا بجانب الجرس السماوي.", choices: ["أمرّ بهدوء", "أوقظه وأسأله عن الطريق"], results: ["نجحت بالمرور، لكنك فقدت إحدى أدواتك على الطريق.", "استيقظ الحارس وابتسم: (أخيرًا وصل شخص شجاع)."] },
+        { title: "الفصل 7: سلّم الغيوم", text: "ظهر أمامك سلّم من نور يصعد بين الغيوم، لكنه يختفي ويظهر كل لحظة.", choices: ["أصعد بسرعة عند ظهوره", "أحسب الإيقاع ثم أصعد"], results: ["حماسك أوصلك للأعلى، رغم بعض التعثر.", "الدقة جعلت صعودك ثابتًا وآمنًا."] },
+        { title: "الفصل 8: مرآة الحقيقة", text: "في القاعة الأخيرة، واجهتك مرآة تعرض نسخة منك خائفة تريد العودة.", choices: ["أكسر المرآة", "أتحدث مع انعكاسي"], results: ["اختفى الخوف سريعًا، لكنك شعرت بثقل في قلبك.", "تفهمت خوفك وتحول الانعكاس إلى ضوء دافئ."] },
+        { title: "الفصل 9: مدينة السماء", text: "وصلت أخيرًا إلى مدينة السماء، واكتشفت أن الرسالة كانت منك... من المستقبل.", choices: ["أرسل رسالة جديدة لبدايتك", "أبقى هنا وأبدأ حياة جديدة"], results: ["أغلقت الحلقة الزمنية... وبدا كل شيء منطقيًا أخيرًا.", "اخترت بداية جديدة، وصارت المدينة بيتك الأبدي."] }
+      ];
+
+      const titleEl = document.getElementById("chapter-title");
+      const counterEl = document.getElementById("chapter-counter");
+      const textEl = document.getElementById("chapter-text");
+      const choiceAButton = document.getElementById("choice-a");
+      const choiceBButton = document.getElementById("choice-b");
+      const choiceResultEl = document.getElementById("choice-result");
+      const prevBtn = document.getElementById("prev-btn");
+      const nextBtn = document.getElementById("next-btn");
+      const restartBtn = document.getElementById("restart-btn");
+
+      let chapterIndex = 0;
+      const chapterDecisions = new Array(chapters.length).fill(null);
+
+      function renderChapter() {
+        const chapter = chapters[chapterIndex];
+        titleEl.textContent = chapter.title;
+        counterEl.textContent = `الفصل ${chapterIndex + 1} من ${chapters.length}`;
+        textEl.textContent = chapter.text;
+        choiceAButton.textContent = chapter.choices[0];
+        choiceBButton.textContent = chapter.choices[1];
+
+        const saved = chapterDecisions[chapterIndex];
+        choiceResultEl.textContent = saved === null
+          ? "اختر أحد الخيارين لمعرفة نتيجة قرارك."
+          : chapter.results[saved];
+
+        prevBtn.disabled = chapterIndex === 0;
+        nextBtn.disabled = chapterIndex === chapters.length - 1;
+      }
+
+      function choose(index) {
+        chapterDecisions[chapterIndex] = index;
+        choiceResultEl.textContent = chapters[chapterIndex].results[index];
+      }
+
+      choiceAButton.addEventListener("click", () => choose(0));
+      choiceBButton.addEventListener("click", () => choose(1));
+
+      prevBtn.addEventListener("click", () => {
+        if (chapterIndex > 0) {
+          chapterIndex -= 1;
+          renderChapter();
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if (chapterIndex < chapters.length - 1) {
+          chapterIndex += 1;
+          renderChapter();
+        }
+      });
+
+      restartBtn.addEventListener("click", () => {
+        chapterIndex = 0;
+        chapterDecisions.fill(null);
+        renderChapter();
+      });
+
+      renderChapter();
+    </script>
+  </body>
+</html>
