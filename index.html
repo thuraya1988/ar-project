@@ -165,5 +165,70 @@
 
       renderChapter();
     </script>
+    <div>
+
+<p id="expectedText">
+Hello John
+</p>
+
+<button onclick="startListening()">
+🎤 Speak
+</button>
+
+<p id="studentSpeech"></p>
+
+<p id="feedback"></p>
+
+</div>
+    <script>
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+const recognition = new SpeechRecognition();
+
+recognition.lang = "en-US";
+recognition.continuous = false;
+recognition.interimResults = false;
+
+function startListening(){
+
+recognition.start();
+
+}
+
+recognition.onresult = function(event){
+
+const speechResult =
+event.results[0][0].transcript;
+
+document.getElementById("studentSpeech")
+.innerText = speechResult;
+
+analyzeSpeech(speechResult);
+
+};
+
+function analyzeSpeech(text){
+
+const expected =
+document.getElementById("expectedText").innerText;
+
+if(text.toLowerCase() === expected.toLowerCase()){
+
+document.getElementById("feedback")
+.innerText = "Excellent pronunciation!";
+
+}else{
+
+document.getElementById("feedback")
+.innerText = "Try again...";
+
+}
+
+}
+
+</script>
   </body>
 </html>
