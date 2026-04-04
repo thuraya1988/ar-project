@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Write with the Palm</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#0f0a04; --gold:#c8922a; --gold2:#f0c060; --cream:#fdf6e3; --muted:#8a7050;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--cream)}
+.header{background:linear-gradient(135deg,#1a4a28,#0e2d4a);padding:24px 16px;text-align:center;position:relative}
+.back-link{position:absolute;left:12px;top:12px;color:#ddd;text-decoration:none;font-size:.8rem}
+.container{max-width:900px;margin:0 auto;padding:18px 14px 40px}
+.level-intro{display:flex;gap:10px;overflow:auto;margin-bottom:16px}
+.level-pill{padding:8px 14px;border-radius:999px;border:1px solid #666;cursor:pointer;font-family:'Cinzel',serif}
+.level-pill.active{outline:2px solid #fff}
+.prompt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.prompt-card{padding:14px;border-radius:14px;border:1px solid #555;background:#182020;cursor:pointer}
+.prompt-card.selected{outline:2px solid var(--gold2)}
+.write-box{margin-top:16px;border:1px solid #444;border-radius:16px;padding:16px;background:#141414}
+#starters-box{display:none;margin-bottom:10px}
+.starter-chip{display:inline-block;padding:5px 10px;border:1px solid #4f9;border-radius:999px;margin:4px;cursor:pointer}
+.textarea-label{display:flex;justify-content:space-between;margin-bottom:8px}
+#essay{width:100%;min-height:180px;background:#111;color:#f2f2f2;border:1px solid #555;border-radius:12px;padding:12px}
+.btn-row{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+button{cursor:pointer}
+#loading,#report{display:none;margin-top:16px}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat-card{background:#1b1b1b;border:1px solid #444;border-radius:10px;padding:8px;text-align:center}
+.rep-card{background:#1b1b1b;border:1px solid #444;border-radius:10px;padding:10px;margin-top:10px}
+.corrected-text .fix{background:#1f4;border-radius:3px;padding:0 2px;color:#041}
+.corrected-text .err{background:#833;border-radius:3px;padding:0 2px;color:#fcc}
+@media (max-width:480px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="header">
+  <a class="back-link" href="index.html">← Home</a>
+  <h1>Write with the Palm</h1>
+  <p>اكتب وأعطِ سحرك — Give your charm</p>
+</div>
+
+<div class="container">
+  <div class="level-intro">
+    <div class="level-pill active" id="pill1" onclick="filterLevel(1)">Level 1 — Starter</div>
+    <div class="level-pill" id="pill2" onclick="filterLevel(2)">Level 2 — Explorer</div>
+    <div class="level-pill" id="pill3" onclick="filterLevel(3)">Level 3 — Champion</div>
+  </div>
+
+  <div class="prompt-grid" id="promptGrid">
+    <div class="prompt-card l1" data-level="1" data-starters="Thuraya is a teacher.|She lives in...|The village is called..." onclick="selectCard(this)">Complete the sentences about Thuraya</div>
+    <div class="prompt-card l1" data-level="1" data-starters="The falaj is...|The water is...|Children like to..." onclick="selectCard(this)">Complete the sentences about the falaj</div>
+    <div class="prompt-card l2" data-level="2" data-starters="" onclick="selectCard(this)">What happened with the wasp?</div>
+    <div class="prompt-card l2" data-level="2" data-starters="" onclick="selectCard(this)">Nasser and the pickup truck</div>
+    <div class="prompt-card l3" data-level="3" data-starters="" onclick="selectCard(this)">The palm tree — why is she the queen?</div>
+    <div class="prompt-card l3" data-level="3" data-starters="" onclick="selectCard(this)">John vs Thuraya — compare them</div>
+  </div>
+
+  <div class="write-box">
+    <div id="starters-box">
+      <strong>Sentence starters:</strong>
+      <div id="starterChips"></div>
+    </div>
+
+    <div class="textarea-label"><span>Your writing</span><span id="wc">0 words</span></div>
+    <textarea id="essay" placeholder="Write your answer here in English..."></textarea>
+    <div class="btn-row">
+      <button onclick="clearAll()">Clear</button>
+      <button id="submitBtn" onclick="submitWriting()" disabled>Submit & Check</button>
+    </div>
+  </div>
+
+  <div id="loading">Checking your writing...</div>
+  <div id="report"></div>
+</div>
+
+<script>
+let currentLevel = 1;
+let selectedCard = null;
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.prompt-card').forEach(c => c.style.display = c.dataset.level === '1' ? '' : 'none');
+  const first = document.querySelector('.prompt-card.l1');
+  if (first) selectCard(first);
+});
+
+function filterLevel(lvl) {
+  currentLevel = lvl;
+  [1,2,3].forEach(i => document.getElementById('pill'+i).classList.toggle('active', i===lvl));
+  document.querySelectorAll('.prompt-card').forEach(c => c.style.display = Number(c.dataset.level) === lvl ? '' : 'none');
+  const first = document.querySelector(`.prompt-card.l${lvl}`);
+  if (first) selectCard(first);
+  clearAll(false);
+}
+
+function selectCard(el) {
+  document.querySelectorAll('.prompt-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedCard = el;
+  const starters = el.dataset.starters || '';
+  const box = document.getElementById('starters-box');
+  const chipsEl = document.getElementById('starterChips');
+  if (Number(el.dataset.level) === 1 && starters) {
+    box.style.display = 'block';
+    chipsEl.innerHTML = starters.split('|').map(s => `<span class="starter-chip" onclick="insertStarter(${JSON.stringify(s)})">${s}</span>`).join('');
+  } else {
+    box.style.display = 'none';
+    chipsEl.innerHTML = '';
+  }
+}
+
+function insertStarter(text) {
+  const ta = document.getElementById('essay');
+  ta.value = ta.value ? `${ta.value}\n${text}` : text;
+  ta.focus();
+  updateWC();
+}
+
+function updateWC() {
+  const words = document.getElementById('essay').value.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('wc').textContent = `${words} words`;
+  document.getElementById('submitBtn').disabled = words < 4;
+}
+document.getElementById('essay').addEventListener('input', updateWC);
+
+function clearAll(clearReport = true) {
+  document.getElementById('essay').value = '';
+  document.getElementById('wc').textContent = '0 words';
+  document.getElementById('submitBtn').disabled = true;
+  if (clearReport) {
+    document.getElementById('report').style.display = 'none';
+    document.getElementById('report').innerHTML = '';
+  }
+}
+
+async function submitWriting() {
+  const text = document.getElementById('essay').value.trim();
+  if (!text) return;
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('submitBtn').disabled = true;
+  try {
+    const formData = new URLSearchParams();
+    formData.append('text', text);
+    formData.append('language', 'en-US');
+    formData.append('enabledOnly', 'false');
+
+    const response = await fetch('https://api.languagetool.org/v2/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData.toString()
+    });
+    const data = await response.json();
+    renderReport(data, text);
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('report').style.display = 'block';
+    document.getElementById('report').innerHTML = 'Network error. Please try again.';
+  }
+}
+
+function renderReport(data, originalText) {
+  document.getElementById('loading').style.display = 'none';
+  const matches = data.matches || [];
+  const words = originalText.trim().split(/\s+/).filter(Boolean).length;
+  const sents = (originalText.match(/[.!?]+/g) || []).length || 1;
+  const grammarErrs = matches.filter(m => m.rule.issueType !== 'misspelling');
+  const spellErrs = matches.filter(m => m.rule.issueType === 'misspelling');
+  const score = Math.max(40, Math.max(0, 100 - matches.length * 8));
+
+  let annotated = originalText;
+  [...matches].sort((a,b) => b.offset - a.offset).forEach(m => {
+    const bad = originalText.substr(m.offset, m.length);
+    const cls = m.rule.issueType === 'misspelling' ? 'err' : 'fix';
+    annotated = annotated.substring(0, m.offset) + `<span class="${cls}">${bad}</span>` + annotated.substring(m.offset + m.length);
+  });
+
+  document.getElementById('report').innerHTML = `
+    <div class="rep-card"><strong>Score:</strong> ${score}/100</div>
+    <div class="stats-row">
+      <div class="stat-card"><div>${words}</div><small>Words</small></div>
+      <div class="stat-card"><div>${sents}</div><small>Sentences</small></div>
+      <div class="stat-card"><div>${spellErrs.length}</div><small>Spelling</small></div>
+      <div class="stat-card"><div>${grammarErrs.length}</div><small>Grammar</small></div>
+    </div>
+    <div class="rep-card"><strong>Your Writing — Annotated</strong><div class="corrected-text">${annotated}</div></div>
+  `;
+  document.getElementById('report').style.display = 'block';
+  document.getElementById('submitBtn').disabled = false;
+}
+</script>
+</body>
+</html>
