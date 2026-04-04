@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>123 Lets Learn English Under the Palm Tree</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: radial-gradient(circle at top, #1e293b, #020617 70%);
+        color: #e2e8f0;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+      }
+      .storybook {
+        width: min(92vw, 760px);
+        background: rgba(15, 23, 42, 0.92);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 16px;
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+        padding: 1.2rem;
+      }
+      .story-header {
+        border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+        padding-bottom: 0.9rem;
+        margin-bottom: 0.9rem;
+      }
+      .badge { margin: 0 0 0.4rem; font-size: 0.8rem; color: #93c5fd; }
+      h1 { margin: 0; font-size: clamp(1.15rem, 2.6vw, 1.7rem); }
+      .chapter-counter { margin-top: 0.4rem; color: #cbd5e1; }
+      .story-body { display: grid; gap: 1rem; }
+      #chapter-text { margin: 0; line-height: 1.9; font-size: 1.06rem; }
+      .choices { display: grid; gap: 0.55rem; }
+      .choices-label { margin: 0; font-weight: 600; color: #a5f3fc; }
+      .choice-btn {
+        border: 1px solid #334155;
+        background: #1e293b;
+        color: #f8fafc;
+        border-radius: 10px;
+        padding: 0.62rem 0.75rem;
+        font-size: 0.98rem;
+        cursor: pointer;
+        text-align: left;
+      }
+      .choice-btn:hover { background: #334155; }
+      .choice-result {
+        margin: 0;
+        border-left: 3px solid #22d3ee;
+        padding-left: 0.7rem;
+        color: #fef9c3;
+        min-height: 2.2rem;
+      }
+      .controls { margin-top: 1rem; display: flex; gap: 0.55rem; }
+      .controls button {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.5rem 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      #restart-btn { margin-left: auto; background: #7c3aed; color: #fff; }
+      #next-btn, #prev-btn { background: #0ea5e9; color: #082f49; }
+      .controls button:disabled { opacity: 0.45; cursor: not-allowed; }
+    </style>
+  </head>
+  <body>
+    <main class="storybook">
+      <header class="story-header">
+        <p class="badge">123 Lets Learn English Under the Palm Tree</p>
+        <h1 id="chapter-title">Chapter 1: Under the Palm Tree</h1>
+        <p id="chapter-counter" class="chapter-counter">Chapter 1 of 9</p>
+      </header>
+
+      <section class="story-body">
+        <p id="chapter-text"></p>
+        <div class="choices">
+          <p class="choices-label">Pick your learning move:</p>
+          <button id="choice-a" class="choice-btn"></button>
+          <button id="choice-b" class="choice-btn"></button>
+        </div>
+        <p id="choice-result" class="choice-result"></p>
+      </section>
+
+      <footer class="controls">
+        <button id="prev-btn" disabled>Previous</button>
+        <button id="next-btn">Next</button>
+        <button id="restart-btn">Restart</button>
+      </footer>
+    </main>
+
+    <script>
+      const chapters = [
+        { title: "Chapter 1: Under the Palm Tree", text: "Teacher Lina writes in the sand: 1, 2, 3. 'Today we learn English under the palm tree,' she smiles.", choices: ["Say: One, Two, Three", "Say: Uno, Dos, Tres"], results: ["Great! You used the English numbers correctly.", "Nice try! That is Spanish, not English."] },
+        { title: "Chapter 2: Hello Time", text: "A small parrot lands nearby. Lina asks, 'How do we greet our new friend in English?'", choices: ["Say: Hello!", "Say: Goodbye!"], results: ["Perfect greeting. The parrot happily repeats 'Hello!'.", "Oops, goodbye is for leaving, not meeting."] },
+        { title: "Chapter 3: Colors in the Sky", text: "You point at the sea and sky. Lina asks for two color words in English.", choices: ["Blue and green", "Red and black"], results: ["Excellent! Blue sea and green palm leaves.", "Creative, but not what you see right now."] },
+        { title: "Chapter 4: Palm Tree Parts", text: "Lina touches the tree and asks, 'What is this in English: trunk or river?'", choices: ["Trunk", "River"], results: ["Correct! The middle part is called the trunk.", "Not this time. A river is water, not part of a tree."] },
+        { title: "Chapter 5: Snack Break Words", text: "At break time, you have dates and water. Lina asks: 'Which sentence is correct?'", choices: ["I am hungry.", "I are hungry."], results: ["Great grammar! 'I am hungry' is correct.", "Close! Use 'am' with 'I'."] },
+        { title: "Chapter 6: Action Verbs", text: "The class stands up in the shade. Lina says: 'Choose the action verb in English.'", choices: ["Run", "Banana"], results: ["Yes! 'Run' is an action verb.", "Banana is a noun, not a verb."] },
+        { title: "Chapter 7: Build a Sentence", text: "Now you arrange words on shells: 'I / under / study / tree / the palm'.", choices: ["I study under the palm tree.", "Under I palm the study tree."], results: ["Excellent sentence order!", "The words are mixed up. Try subject + verb + place."] },
+        { title: "Chapter 8: Friendly Conversation", text: "A traveler arrives and asks, 'Can you help me learn English?'", choices: ["Yes, of course!", "No, never!"], results: ["Wonderful! Kind language builds confidence.", "That sounds too harsh for a learning circle."] },
+        { title: "Chapter 9: Graduation Shade", text: "Sunset paints the beach gold. Lina gives you a leaf badge: '123 - Let's Learn English Under the Palm Tree.'", choices: ["Say: Thank you, teacher!", "Stay silent"], results: ["Beautiful finish. You completed the palm-tree English story!", "You passed, but a polite thank-you is always better."] }
+      ]
+
+      const titleEl = document.getElementById("chapter-title");
+      const counterEl = document.getElementById("chapter-counter");
+      const textEl = document.getElementById("chapter-text");
+      const choiceAButton = document.getElementById("choice-a");
+      const choiceBButton = document.getElementById("choice-b");
+      const choiceResultEl = document.getElementById("choice-result");
+      const prevBtn = document.getElementById("prev-btn");
+      const nextBtn = document.getElementById("next-btn");
+      const restartBtn = document.getElementById("restart-btn");
+
+      let chapterIndex = 0;
+      const chapterDecisions = new Array(chapters.length).fill(null);
+
+      function renderChapter() {
+        const chapter = chapters[chapterIndex];
+        titleEl.textContent = chapter.title;
+        counterEl.textContent = `Chapter ${chapterIndex + 1} of ${chapters.length}`;
+        textEl.textContent = chapter.text;
+        choiceAButton.textContent = chapter.choices[0];
+        choiceBButton.textContent = chapter.choices[1];
+
+        const saved = chapterDecisions[chapterIndex];
+        choiceResultEl.textContent = saved === null
+          ? "Choose one option to reveal the outcome."
+          : chapter.results[saved];
+
+        prevBtn.disabled = chapterIndex === 0;
+        nextBtn.disabled = chapterIndex === chapters.length - 1;
+      }
+
+      function choose(index) {
+        chapterDecisions[chapterIndex] = index;
+        choiceResultEl.textContent = chapters[chapterIndex].results[index];
+      }
+
+      choiceAButton.addEventListener("click", () => choose(0));
+      choiceBButton.addEventListener("click", () => choose(1));
+
+      prevBtn.addEventListener("click", () => {
+        if (chapterIndex > 0) {
+          chapterIndex -= 1;
+          renderChapter();
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        if (chapterIndex < chapters.length - 1) {
+          chapterIndex += 1;
+          renderChapter();
+        }
+      });
+
+      restartBtn.addEventListener("click", () => {
+        chapterIndex = 0;
+        chapterDecisions.fill(null);
+        renderChapter();
+      });
+
+      renderChapter();
+    </script>
+  </body>
+</html>
