@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THEpalmstory Cover</title>
+  <style>
+    :root {
+      --cover-bg: #e7e2d4;
+      --title-color: #111;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--cover-bg);
+      font-family: "Times New Roman", Georgia, serif;
+      color: var(--title-color);
+    }
+
+    .cover {
+      width: min(1000px, 92vw);
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .cover h1 {
+      margin: 0;
+      line-height: 1.2;
+      letter-spacing: 1px;
+      font-size: clamp(2rem, 6.5vw, 6rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      text-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <main class="cover">
+    <h1>123<br />Learning English<br />Under the Palm<br />Tree</h1>
+  </main>
+</body>
+</html>
