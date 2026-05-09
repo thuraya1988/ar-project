@@ -1,436 +1,208 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>123 Lets Learn English Under the Palm Tree</title>
-    <style>
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: radial-gradient(circle at 15% 10%, #334155, #0f172a 45%, #020617 85%);
-        color: #e2e8f0;
-        display: grid;
-        place-items: center;
-        padding: 1.15rem;
-      }
-      .storybook {
-        width: min(94vw, 1020px);
-        background: linear-gradient(155deg, rgba(15,23,42,0.94), rgba(12,20,36,0.92));
-        border: 1px solid rgba(148, 163, 184, 0.26);
-        border-radius: 22px;
-        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-        padding: 1.15rem;
-      }
-      .story-header { border-bottom: 1px solid rgba(148, 163, 184, 0.25); padding-bottom: 0.95rem; margin-bottom: 0.95rem; }
-      .title-row { display: flex; align-items: center; gap: 0.45rem; }
-      .title-icon { width: 22px; height: 22px; }
-      .badge { margin: 0 0 0.35rem; color: #7dd3fc; letter-spacing: .3px; }
-      h1 { margin: 0; font-size: clamp(1.1rem, 2.4vw, 1.55rem); }
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>هيكل الموقع | 123 Learning English Under the Palm Tree</title>
+  <style>
+    :root {
+      --bg: #e7e2d4;
+      --panel: #f8f4ea;
+      --line: #cdc5b4;
+      --text: #1d1b17;
+      --muted: #5b5447;
+      --accent: #204f68;
+      --accent-2: #17384b;
+    }
 
-      .progress-wrap { margin-top: 0.65rem; }
-      .progress-top { display: flex; justify-content: space-between; font-size: 0.9rem; }
-      .progress-bar { margin-top: 0.25rem; background: #1f2937; border-radius: 999px; height: 12px; overflow: hidden; border: 1px solid rgba(148,163,184,.2); }
-      .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #22d3ee, #34d399); transition: width .45s ease; }
+    * { box-sizing: border-box; }
 
-      .tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .45rem; margin: .9rem 0; }
-      .tab-btn { border: 1px solid #334155; background: #111827; color: #e2e8f0; padding: .55rem; border-radius: 12px; cursor: pointer; font-weight: 600; }
-      .tab-btn.active { border-color: #22d3ee; background: linear-gradient(135deg, #0b2d3a, #113247); box-shadow: 0 0 0 1px rgba(34,211,238,.3) inset; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    }
 
-      .panel { display: none; gap: .7rem; }
-      .panel.active { display: grid; }
-      .card { border: 1px solid rgba(148,163,184,.26); border-radius: 14px; padding: .85rem; background: rgba(15,23,42,.7); backdrop-filter: blur(6px); }
+    .wrap {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      padding: 1rem;
+      display: grid;
+      gap: 1rem;
+    }
 
-      .listen-tools, .controls { display: flex; gap: .45rem; flex-wrap: wrap; }
-      .listen-tools button, .controls button, .mini-btn {
-        border: 1px solid #334155; background: #0f172a; color: #e2e8f0; border-radius: 999px;
-        padding: .35rem .75rem; cursor: pointer; font-weight: 600;
-      }
-      .controls #restart-btn { margin-left: auto; background: #7c3aed; border-color: #7c3aed; }
-      .choice-btn { width: 100%; margin-top: .4rem; border-radius: 12px; border: 1px solid #334155; background: #1e293b; color: #fff; padding: .64rem .8rem; text-align: left; cursor: pointer; transition: transform .12s ease, background .2s ease; }
-      .choice-btn:hover { background: #334155; transform: translateY(-1px); }
-      .listening-hover { outline: 2px solid #22d3ee; outline-offset: 2px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+    }
 
-      .result, .small { color: #cbd5e1; margin: 0; }
-      #chapter-text { white-space: pre-line; line-height: 1.65; }
-      textarea, input[type="text"] { width: 100%; border-radius: 10px; border: 1px solid #475569; background: #0f172a; color: #e2e8f0; padding: .55rem; }
+    .header {
+      padding: 1rem;
+      display: grid;
+      gap: .75rem;
+    }
 
-      .vocab-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .45rem; }
-      .hotspot-wrap { position: relative; background: linear-gradient(#0ea5e9, #0369a1); border-radius: 12px; height: 170px; overflow: hidden; }
-      .sun { position: absolute; right: 16px; top: 16px; width: 44px; height: 44px; border-radius: 50%; background: #fde047; }
-      .palm { position: absolute; left: 30%; bottom: 8px; font-size: 58px; }
-      .hotspot { position: absolute; border: 2px dashed #f8fafc; border-radius: 50%; width: 44px; height: 44px; cursor: pointer; }
-      .hotspot.one { left: 24%; top: 34%; }
-      .hotspot.two { left: 50%; top: 54%; }
-      .hotspot.three { left: 70%; top: 28%; }
+    .title {
+      margin: 0;
+      font-size: clamp(1.2rem, 2.8vw, 1.8rem);
+      line-height: 1.6;
+    }
 
-      canvas { width: 100%; height: 220px; border-radius: 14px; border: 1px solid #334155; background: #fff; touch-action: none; box-shadow: inset 0 0 0 1px #e2e8f0; }
-      .certificate { border: 2px dashed #22d3ee; padding: .85rem; border-radius: 14px; text-align: center; background: linear-gradient(180deg, rgba(8,47,73,.35), rgba(8,47,73,.12)); }
-      .level-pill { padding: .2rem .6rem; border-radius: 999px; font-weight: 700; }
-      .bronze { background: #7c2d12; }
-      .silver { background: #475569; }
-      .gold { background: #854d0e; }
-    </style>
-  </head>
-  <body>
-    <main class="storybook">
-      <header class="story-header">
-        <div class="title-row">
-          <img src="palmtreeicon.svg" alt="Palm tree icon" class="title-icon" />
-          <p class="badge">123 Lets Learn English Under the Palm Tree</p>
-        </div>
-        <div class="title-row">
-          <img src="palmtreeicon.svg" alt="Palm tree icon" class="title-icon" />
-          <h1 id="chapter-title">Chapter 1: Under the Palm Tree</h1>
-        </div>
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
 
-        <div class="progress-wrap">
-          <div class="progress-top">
-            <span id="progress-label">Progress: 0 / 8 skills</span>
-            <span>Level: <span id="level-pill" class="level-pill bronze">Bronze</span></span>
-          </div>
-          <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
-          <p id="chapter-lock-label" class="small" style="margin-top:.4rem;">Unlocked Chapter: 1 / 9</p>
-        </div>
-      </header>
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
 
-      <nav class="tabs">
-        <button class="tab-btn active" data-panel="reading">Reading</button>
-        <button class="tab-btn" data-panel="listening">Listening</button>
-        <button class="tab-btn" data-panel="vocab">Vocabulary</button>
-        <button class="tab-btn" data-panel="creative">Creative Skills</button>
+    .nav a {
+      text-decoration: none;
+      padding: .5rem .8rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: #fff;
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    .grid {
+      display: grid;
+      gap: .8rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      padding: 1rem;
+      display: grid;
+      gap: .55rem;
+      align-content: start;
+      min-height: 170px;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: .95rem;
+    }
+
+    .actions {
+      margin-top: auto;
+      display: flex;
+      gap: .45rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      padding: .42rem .75rem;
+      border-radius: 9px;
+      font-size: .88rem;
+      text-decoration: none;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .footer {
+      padding: .85rem 1rem;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="panel header">
+      <h1 class="title">خريطة الموقع — تجهيز الصفحات والأقسام</h1>
+      <p class="subtitle">تم تجهيز الهيكل فقط. المحتوى الداخلي لكل قسم، وتسلسل القصة، وروابط الأزرار النهائية تضعها أنت لاحقًا.</p>
+      <nav class="nav" aria-label="أقسام الموقع">
+        <a href="#home">الرئيسية</a>
+        <a href="#about">عن المشروع</a>
+        <a href="#sections">الأقسام التعليمية</a>
+        <a href="#story">قسم القصة</a>
+        <a href="#activities">الأنشطة</a>
+        <a href="#contact">التواصل</a>
       </nav>
+    </header>
 
-      <section id="panel-reading" class="panel active">
-        <article class="card">
-          <p id="chapter-text" class="small"></p>
-          <p id="question-text" class="small"></p>
-          <button id="choice-a" class="choice-btn"></button>
-          <button id="choice-b" class="choice-btn"></button>
-          <p id="choice-result" class="result"></p>
-        </article>
-        <div class="controls">
-          <button id="prev-btn">Previous</button>
-          <button id="next-btn">Next</button>
-          <button id="restart-btn">Restart</button>
-          <button id="complete-chapter-btn">Complete Chapter</button>
+    <section id="sections" class="grid">
+      <article id="home" class="panel card">
+        <h2>الرئيسية</h2>
+        <p>واجهة تعريفية بالموقع مع العنوان الرئيسي ورسالة مختصرة.</p>
+        <div class="actions">
+          <a class="btn" href="#">زر رئيسي (تحدد وجهته لاحقًا)</a>
+          <a class="btn secondary" href="#">زر ثانوي</a>
         </div>
-        <p id="chapter-gate-msg" class="small">Finish required activities to unlock the next chapter.</p>
-      </section>
+      </article>
 
-      <section id="panel-listening" class="panel">
-        <article class="card">
-          <div class="listen-tools">
-            <button id="listen-btn">🔊 Listen Chapter</button>
-            <button id="mute-btn" aria-pressed="false">🔈 Mute: Off</button>
-          </div>
-          <p class="small">Hover chapter text, question, and answers in Reading tab to hear quick prompts.</p>
-        </article>
-        <article class="card">
-          <h3>Hotspot Listening</h3>
-          <div class="hotspot-wrap">
-            <div class="sun"></div>
-            <div class="palm">🌴</div>
-            <button class="hotspot one" data-fact="Leaves. They are green."></button>
-            <button class="hotspot two" data-fact="Trunk. It is tall and strong."></button>
-            <button class="hotspot three" data-fact="Sun. It is bright and yellow."></button>
-          </div>
-          <p id="hotspot-result" class="result">Tap hotspot circles to listen to vocabulary facts.</p>
-        </article>
-      </section>
+      <article id="about" class="panel card">
+        <h2>عن المشروع</h2>
+        <p>قسم تعريفي بالأهداف والفئة المستهدفة ومنهج العمل.</p>
+        <div class="actions">
+          <a class="btn secondary" href="#">قراءة المزيد</a>
+        </div>
+      </article>
 
-      <section id="panel-vocab" class="panel">
-        <article class="card">
-          <h3>Vocabulary Challenge</h3>
-          <div class="vocab-grid">
-            <button class="mini-btn vocab-btn" data-ok="true">Trunk = Tree body</button>
-            <button class="mini-btn vocab-btn" data-ok="false">Sun = Cold ball</button>
-            <button class="mini-btn vocab-btn" data-ok="true">Leaves = Green parts</button>
-            <button class="mini-btn vocab-btn" data-ok="false">Run = A fruit</button>
-          </div>
-          <p id="vocab-result" class="result">Score: 0 / 4</p>
-        </article>
+      <article id="story" class="panel card">
+        <h2>قسم القصة (هيكل فقط)</h2>
+        <p>هذا القسم جاهز كحاوية. تفاصيل القصة، التقسيم، الترتيب، ووقت الإظهار تضيفها أنت.</p>
+        <div class="actions">
+          <a class="btn secondary" href="#">فتح القسم</a>
+        </div>
+      </article>
 
-        <article class="card">
-          <h3>Critical Thinking</h3>
-          <p class="small">Why is learning under the palm tree fun and helpful?</p>
-          <textarea id="critical-text" rows="3" placeholder="Write your idea..."></textarea>
-          <button id="critical-save" class="mini-btn">Save Reflection</button>
-          <p id="critical-result" class="result"></p>
-        </article>
-      </section>
+      <article id="activities" class="panel card">
+        <h2>قسم الأنشطة</h2>
+        <p>مكان مخصص للتمارين والألعاب التعليمية والواجبات.</p>
+        <div class="actions">
+          <a class="btn secondary" href="#">عرض الأنشطة</a>
+        </div>
+      </article>
 
-      <section id="panel-creative" class="panel">
-        <article class="card">
-          <h3>Writing</h3>
-          <textarea id="writing-text" rows="4" placeholder="Write 3-5 English sentences about your lesson..."></textarea>
-          <p id="writing-result" class="result">Word count: 0</p>
-          <p class="small" style="margin-top:.45rem;">
-            Need the full writing workflow? Open
-            <a href="write-with-palm.html" style="color:#7dd3fc;">Write with the Palm</a>.
-          </p>
-        </article>
+      <article id="contact" class="panel card">
+        <h2>التواصل</h2>
+        <p>قسم معلومات التواصل ونموذج الرسائل (يضاف لاحقًا).</p>
+        <div class="actions">
+          <a class="btn secondary" href="#">بيانات التواصل</a>
+        </div>
+      </article>
 
-        <article class="card">
-          <h3>Drawing & Coloring</h3>
-          <div class="listen-tools">
-            <input type="color" id="color-picker" value="#16a34a" />
-            <button id="clear-canvas" class="mini-btn">Clear Canvas</button>
-          </div>
-          <canvas id="draw-canvas" width="860" height="220"></canvas>
-        </article>
+      <article class="panel card">
+        <h2>صفحة داخلية (Template)</h2>
+        <p>قالب عام لأي صفحة جديدة تضيفها مستقبلًا بنفس الهوية البصرية.</p>
+        <div class="actions">
+          <a class="btn secondary" href="#">استخدام القالب</a>
+        </div>
+      </article>
+    </section>
 
-        <article class="card certificate">
-          <h3>Certificate</h3>
-          <input id="student-name" type="text" placeholder="Enter student name" />
-          <button id="generate-cert" class="mini-btn">Generate Certificate</button>
-          <p id="cert-result" class="result">Complete skills to unlock full certificate.</p>
-        </article>
-
-        <article class="card">
-          <h3>Remedial Plan</h3>
-          <p id="remedial-plan" class="small">No plan yet. Complete activities first.</p>
-        </article>
-      </section>
-    </main>
-
-    <script>
-      const chapters = [
-        {
-          title: "Chapter 1: Story 1 — The Road to Al-Qurawashiyah",
-          text: "Scene 1 — The Letter\nThe sky over London hung low and heavy that morning, wrapped in a dull gray that seemed unwilling to lift. It was the kind of day that neither rained nor cleared, leaving everything suspended in a quiet, muted stillness.\n\nInside the small apartment, that same stillness settled between the walls, but it carried something more... something waiting.\n\nJohn sat at the wooden table, a cup of tea in front of him that had long gone cold. His hand held a letter, slightly creased at the edges from being opened and folded more than once.\n\nHe read it again. Slower this time. As if the meaning might shift.\nIt didn't.\nBut the weight of the words did.\n\nAcross the room, Sophia sat with a book resting in her hands. The title was clear: The Palm Tree.\n\nShe had stopped reading some time ago. Her eyes lingered on the page, but her attention had moved elsewhere. She could feel it. Something had changed.\n\n\"John.\"\n\nHe didn't respond immediately. Not because he hadn't heard. Because he was still inside the letter.\n\n\"What does it say?\" she asked gently.\n\nJohn looked up slowly. \"They confirmed.\"\n\nSophia lowered the book. \"Oman?\"\n\nJohn nodded. \"A village called... Al-Qurawashiyah.\"\n\nThe name rested in the air. Soft. Unfamiliar. Important.\n\nSophia repeated it quietly. \"Al-Qurawashiyah...\" She smiled. \"It sounds warm.\"\n\nJohn looked at the letter again. \"They want us there before the school term begins.\"\n\n\"When?\"\n\n\"Two weeks.\"\n\nSilence returned. But this time... it felt like movement.\n\nSophia closed her book. \"So... we go.\"\n\nJohn looked at her. \"You didn't even ask where it is.\"\n\nSophia smiled again. \"That's the interesting part.\"\n\nOutside, London remained gray. Inside, something warmer had already begun. Their journey had started.\n\nScene 2 — The Decision\nThe apartment felt smaller after the decision. Not uncomfortable. Just temporary.\n\nSophia moved quietly around the room, gathering a few books into a small stack. John folded the letter carefully and placed it back into its envelope.\n\n\"Do you think we're ready?\" John asked.\n\nSophia looked at him. \"I think we're meant to go.\"\n\nJohn leaned back slightly. \"Oman... a village... completely different.\"\n\nSophia nodded. \"That's why.\"\n\nThe clock ticked softly. The air carried the faint sound of rain beginning outside. London felt distant already.\n\n\"Two weeks,\" John said.\n\nSophia smiled. \"Then we start packing.\"\n\nScene 3 — The Flight\nThe airport lights glowed bright against the dark London sky.\n\nPeople moved quickly. Announcements echoed softly.\n\nJohn and Sophia stood beside their luggage, watching the movement around them.\n\n\"This is really happening,\" Sophia said quietly.\n\nJohn nodded.\n\nThe boarding call sounded. They exchanged a brief glance. Then they walked forward.\n\nThe journey had begun.\n\nScene 4 — The Arrival\nThe heat greeted them first. Warm. Dry. Different.\n\nJohn stepped outside the airport slowly. Sophia followed.\n\nThe sky stretched wide above them. The mountains stood quietly in the distance.\n\nA woman approached them calmly. \"John... Sophia?\"\n\nJohn nodded. \"Yes.\"\n\nShe smiled gently. \"I'm Thuraya.\"\n\nTheir journey into Al-Qurawashiyah had officially begun.\n\nScene 5 — The Road to Al-Qurawashiyah\nThe road stretched forward. Mountains rose slowly. Palm trees appeared between the land. The city faded behind them.\n\nSophia watched quietly. \"It's beautiful.\"\n\nThuraya nodded. \"This is only the beginning.\"\n\nThe village appeared slowly. Simple houses. Palm trees. Quiet life.\n\nJohn felt something settle inside him.\n\nThey weren't visitors anymore. They were arriving.\n\nScene 6 — The First Morning\nThe sun rose gently over Al-Qurawashiyah. Birds moved between palm trees. Children's voices echoed softly.\n\nThuraya turned to them. \"Today... I will show you the school.\"\n\nJohn and Sophia exchanged a glance.\n\n\"We're ready,\" John said.\n\nFor the first time... they weren't traveling anymore.\nThey were beginning.",
-          question: "Which sentence best captures the arc of Chapter 1?",
-          choices: [
-            "From uncertainty in London to grounded purpose in Al-Qurawashiyah.",
-            "From excitement to refusal, then back to London."
-          ],
-          results: [
-            "Excellent. You captured the emotional progression and tone.",
-            "Not quite. The chapter ends with commitment, arrival, and beginning."
-          ]
-        },
-        { title: "Chapter 2: Hello Time", text: "A parrot lands nearby.", question: "Which greeting fits this moment?", choices: ["Hello!", "Goodbye!"], results: ["Perfect.", "Not yet."] },
-        { title: "Chapter 3: Colors in the Sky", text: "Point to sea and leaves.", question: "Which colors match?", choices: ["Blue and green", "Red and black"], results: ["Correct!", "Not this scene."] },
-        { title: "Chapter 4: Palm Tree Parts", text: "Name what you see on the tree.", question: "Middle part name?", choices: ["Trunk", "River"], results: ["Correct!", "River is not a tree part."] },
-        { title: "Chapter 5: Snack Break Words", text: "You eat dates and drink water.", question: "Which sentence is correct?", choices: ["I am hungry.", "I are hungry."], results: ["Great grammar!", "Use am with I."] },
-        { title: "Chapter 6: Action Verbs", text: "Class practices action words.", question: "Which is a verb?", choices: ["Run", "Banana"], results: ["Yes!", "Banana is noun."] },
-        { title: "Chapter 7: Build a Sentence", text: "Arrange cards to make sentence.", question: "Correct order?", choices: ["I study under the palm tree.", "Under I palm the study tree."], results: ["Excellent!", "Words are mixed."] },
-        { title: "Chapter 8: Friendly Conversation", text: "A traveler asks for help.", question: "Friendly reply?", choices: ["Yes, of course!", "No, never!"], results: ["Wonderful!", "Too harsh."] },
-        { title: "Chapter 9: Graduation Shade", text: "Sunset badge ceremony.", question: "Polite finish?", choices: ["Thank you, teacher!", "Stay silent"], results: ["Beautiful finish!", "Politeness matters."] }
-      ];
-
-      const done = { reading:false, listening:false, vocab:false, critical:false, writing:false, drawing:false, hotspot:false, certificate:false };
-      const chapterProgress = Array.from({ length: 9 }, () => ({ reading:false, listening:false, vocab:false, critical:false, writing:false, drawing:false, hotspot:false }));
-      let chapterIndex = 0, unlockedChapter = 0, isMuted = false, hoverTimer = null;
-      let vocabScore = 0, vocabAttempts = 0;
-
-      const titleEl = document.getElementById("chapter-title");
-      const textEl = document.getElementById("chapter-text");
-      const questionEl = document.getElementById("question-text");
-      const choiceA = document.getElementById("choice-a");
-      const choiceB = document.getElementById("choice-b");
-      const choiceResult = document.getElementById("choice-result");
-
-      const progressLabel = document.getElementById("progress-label");
-      const progressFill = document.getElementById("progress-fill");
-      const levelPill = document.getElementById("level-pill");
-      const chapterLockLabel = document.getElementById("chapter-lock-label");
-      const chapterGateMsg = document.getElementById("chapter-gate-msg");
-
-      function speakText(text, interrupt = true) {
-        if (isMuted || !("speechSynthesis" in window) || !text) return;
-        if (interrupt) window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = "en-US"; u.rate = 0.94;
-        window.speechSynthesis.speak(u);
-      }
-
-      function queueHoverSpeech(el, getText) {
-        el.addEventListener("mouseenter", () => {
-          el.classList.add("listening-hover");
-          if (hoverTimer) clearTimeout(hoverTimer);
-          hoverTimer = setTimeout(() => speakText(getText(), false), 220);
-        });
-        el.addEventListener("mouseleave", () => {
-          el.classList.remove("listening-hover");
-          if (hoverTimer) clearTimeout(hoverTimer);
-        });
-      }
-
-      function updateProgress() {
-        const total = Object.keys(done).length;
-        const complete = Object.values(done).filter(Boolean).length;
-        const percent = Math.round((complete/total)*100);
-        progressLabel.textContent = `Progress: ${complete} / ${total} skills`;
-        progressFill.style.width = percent + "%";
-
-        levelPill.className = "level-pill";
-        if (percent >= 80) { levelPill.textContent = "Gold"; levelPill.classList.add("gold"); }
-        else if (percent >= 45) { levelPill.textContent = "Silver"; levelPill.classList.add("silver"); }
-        else { levelPill.textContent = "Bronze"; levelPill.classList.add("bronze"); }
-
-        const plan = document.getElementById("remedial-plan");
-        const planItems = [];
-        if (vocabAttempts >= 4 && vocabScore < 3) planItems.push("Vocabulary: revise trunk, leaves, and action verbs with picture cards.");
-        if (!done.reading) planItems.push("Reading: repeat chapters 1-3 aloud with Listen mode.");
-        if (!done.writing) planItems.push("Writing: write 3 simple daily sentences.");
-        plan.textContent = planItems.length ? planItems.join(" ") : "Great progress! Continue with advanced challenges.";
-      }
-
-      function renderChapter() {
-        const c = chapters[chapterIndex];
-        titleEl.textContent = c.title;
-        textEl.textContent = c.text;
-        questionEl.textContent = c.question;
-        choiceA.textContent = c.choices[0];
-        choiceB.textContent = c.choices[1];
-        choiceResult.textContent = "Choose one answer.";
-        chapterLockLabel.textContent = `Unlocked Chapter: ${unlockedChapter + 1} / ${chapters.length}`;
-        chapterGateMsg.textContent = `Chapter ${chapterIndex + 1}: complete Reading + Listening + Vocabulary + Writing to unlock next chapter.`;
-      }
-
-      function chooseAnswer(i) {
-        const c = chapters[chapterIndex];
-        choiceResult.textContent = c.results[i];
-        speakText(c.results[i]);
-        if (i === 0) { done.reading = true; chapterProgress[chapterIndex].reading = true; }
-        updateProgress();
-      }
-
-      document.getElementById("prev-btn").addEventListener("click", () => { if (chapterIndex>0) { chapterIndex--; renderChapter(); } });
-      document.getElementById("next-btn").addEventListener("click", () => {
-        if (chapterIndex < unlockedChapter && chapterIndex < chapters.length - 1) {
-          chapterIndex++;
-          renderChapter();
-        } else if (chapterIndex < chapters.length - 1) {
-          chapterGateMsg.textContent = "This chapter is locked. Complete current chapter activities first.";
-        }
-      });
-      document.getElementById("restart-btn").addEventListener("click", () => { chapterIndex=0; renderChapter(); });
-      choiceA.addEventListener("click", () => chooseAnswer(0));
-      choiceB.addEventListener("click", () => chooseAnswer(1));
-
-      document.getElementById("listen-btn").addEventListener("click", () => {
-        const c = chapters[chapterIndex];
-        speakText(`${c.title}. ${c.text}. ${c.question}`);
-        done.listening = true;
-        chapterProgress[chapterIndex].listening = true;
-        updateProgress();
-      });
-
-      document.getElementById("mute-btn").addEventListener("click", (e) => {
-        isMuted = !isMuted;
-        e.target.textContent = isMuted ? "🔇 Mute: On" : "🔈 Mute: Off";
-        e.target.setAttribute("aria-pressed", String(isMuted));
-        if (isMuted && "speechSynthesis" in window) window.speechSynthesis.cancel();
-      });
-
-      queueHoverSpeech(textEl, () => textEl.textContent);
-      queueHoverSpeech(questionEl, () => questionEl.textContent);
-      queueHoverSpeech(choiceA, () => choiceA.textContent);
-      queueHoverSpeech(choiceB, () => choiceB.textContent);
-
-      document.querySelectorAll(".hotspot").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const fact = btn.dataset.fact;
-          document.getElementById("hotspot-result").textContent = fact;
-          speakText(fact);
-          done.hotspot = true;
-          chapterProgress[chapterIndex].hotspot = true;
-          updateProgress();
-        });
-      });
-
-      document.querySelectorAll(".vocab-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          vocabAttempts++;
-          const ok = btn.dataset.ok === "true";
-          if (ok) vocabScore++;
-          btn.disabled = true;
-          btn.style.opacity = 0.5;
-          document.getElementById("vocab-result").textContent = `Score: ${vocabScore} / ${vocabAttempts}`;
-          if (vocabAttempts >= 4) {
-            done.vocab = vocabScore >= 3;
-            chapterProgress[chapterIndex].vocab = vocabScore >= 2;
-          }
-          updateProgress();
-        });
-      });
-
-      document.getElementById("critical-save").addEventListener("click", () => {
-        const t = document.getElementById("critical-text").value.trim();
-        document.getElementById("critical-result").textContent = t ? "Great reflection saved." : "Please write at least one idea.";
-        done.critical = t.length > 10;
-        chapterProgress[chapterIndex].critical = t.length > 10;
-        updateProgress();
-      });
-
-      document.getElementById("writing-text").addEventListener("input", (e) => {
-        const words = e.target.value.trim().split(/\s+/).filter(Boolean).length;
-        document.getElementById("writing-result").textContent = `Word count: ${words}`;
-        done.writing = words >= 10;
-        chapterProgress[chapterIndex].writing = words >= 10;
-        updateProgress();
-      });
-
-      const canvas = document.getElementById("draw-canvas");
-      const ctx = canvas.getContext("2d");
-      let draw = false;
-      function pos(ev) {
-        const r = canvas.getBoundingClientRect();
-        const x = (ev.touches ? ev.touches[0].clientX : ev.clientX) - r.left;
-        const y = (ev.touches ? ev.touches[0].clientY : ev.clientY) - r.top;
-        return {x: x * (canvas.width/r.width), y: y * (canvas.height/r.height)};
-      }
-      function start(ev){ draw=true; const p=pos(ev); ctx.beginPath(); ctx.moveTo(p.x,p.y); done.drawing = true; chapterProgress[chapterIndex].drawing = true; updateProgress(); }
-      function move(ev){ if(!draw) return; const p=pos(ev); ctx.lineTo(p.x,p.y); ctx.strokeStyle=document.getElementById("color-picker").value; ctx.lineWidth=4; ctx.lineCap="round"; ctx.stroke(); }
-      function end(){ draw=false; }
-      ["mousedown","touchstart"].forEach(e=>canvas.addEventListener(e,start));
-      ["mousemove","touchmove"].forEach(e=>canvas.addEventListener(e,move));
-      ["mouseup","mouseleave","touchend"].forEach(e=>canvas.addEventListener(e,end));
-      document.getElementById("clear-canvas").addEventListener("click",()=>ctx.clearRect(0,0,canvas.width,canvas.height));
-
-      document.getElementById("generate-cert").addEventListener("click", () => {
-        const name = document.getElementById("student-name").value.trim() || "Student";
-        const complete = Object.values(done).filter(Boolean).length;
-        const total = Object.keys(done).length;
-        const score = Math.round((complete/total)*100);
-        document.getElementById("cert-result").textContent = `${name} earned ${score}% completion under the Palm Tree Program.`;
-        done.certificate = score >= 70;
-        updateProgress();
-      });
-
-
-      document.getElementById("complete-chapter-btn").addEventListener("click", () => {
-        const cp = chapterProgress[chapterIndex];
-        const requiredDone = cp.reading && cp.listening && cp.vocab && cp.writing;
-        if (!requiredDone) {
-          chapterGateMsg.textContent = "Required: Reading + Listening + Vocabulary + Writing before unlock.";
-          return;
-        }
-
-        if (chapterIndex < chapters.length - 1) {
-          unlockedChapter = Math.max(unlockedChapter, chapterIndex + 1);
-          chapterGateMsg.textContent = `Excellent. Chapter ${chapterIndex + 2} unlocked.`;
-        } else {
-          chapterGateMsg.textContent = "All chapters completed. Final mastery reached.";
-        }
-        updateProgress();
-      });
-
-      document.querySelectorAll(".tab-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-          document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
-          btn.classList.add("active");
-          document.getElementById(`panel-${btn.dataset.panel}`).classList.add("active");
-        });
-      });
-
-      renderChapter();
-      updateProgress();
-    </script>
-  </body>
+    <footer class="panel footer">
+      ملاحظة: هذه النسخة لبناء البنية (Pages + Sections) فقط بدون فرض محتوى أو ربط نهائي للأزرار.
+    </footer>
+  </main>
+</body>
 </html>
